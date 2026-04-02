@@ -1,17 +1,2 @@
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-# xynth
+# Xynth
+The Xynth is an experiment in what we call cosmotechnic sonification. Following Yuk Hui’s concept of cosmotechnics—which challenges the universalizing singularity of technology in favor of localized, diverse technical realities—this synthesizer treats the blockchain not as a universal ledger of value, but as a specific, alien cosmology. It creates a "sensory commons" where the data of the blockchain is stripped of its exchange value and refunctionalized as pure vibration. This new direction is an act of sorcery on itself, a practice “with anonymous materials" (Negarestani, 2008, p. 1). The blockchain is a precious anonymous material—a headless, decentralized swarm. By plugging this swarm into a synthesis engine, the Xynth does not "play" music; it allows the "Xyn" —the open, twisting mesh of outside forces—to speak. The Xynth is borne as a mutant site of "radical openness," a "wound" in the silence of the anthropocene through which the "Hidden Writing" (Negarestani, 2008, p. 60) of the blockchain bleeds into the auditory realm.
