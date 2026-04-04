@@ -453,7 +453,6 @@ export const AudioProvider = ({ children }) => {
             setTransportParams,
             setResourceParams,
             setModulationDepth,
-            setModulationDepth,
             setSolanaFilterFreq,
             // Expose Refs for Visualizers
             bitcoinSynth,

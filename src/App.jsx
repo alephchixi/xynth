@@ -13,7 +13,14 @@ import AcceleratorVisualizer from './components/AcceleratorVisualizer';
 
 // Wrapper to access Context inside App content
 const AppContent = () => {
-  const { setTransportParams, setResourceParams, isReady, setAtmosphereMix, setSolanaFilterFreq } = useContext(AudioContext);
+  const {
+    setTransportParams,
+    setResourceParams,
+    setModulationDepth,
+    isReady,
+    setAtmosphereMix,
+    setSolanaFilterFreq,
+  } = useContext(AudioContext);
   const { data } = useContext(DataContext);
 
   // Ghost State
