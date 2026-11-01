@@ -66,7 +66,6 @@ const FlightRadar = ({ flightCount = 12000 }) => {
 
                 // Simple proximity fade to scanline could be cool, but keep simple for now
                 // Detect if close to scan angle?
-                const blipAngle = Math.atan2(y - cy, x - cx);
                 // Simplify: just draw all
                 ctx.beginPath();
                 ctx.arc(x, y, 1, 0, Math.PI * 2);

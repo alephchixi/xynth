@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
-import { DataContext } from '../context/DataContext';
-import { AudioContext } from '../context/AudioContext';
+import { AudioContext, DataContext } from '../context/contexts';
 
 const ModulationPanel = () => {
     const { modSettings, setModSettings, modHistory } = useContext(DataContext);

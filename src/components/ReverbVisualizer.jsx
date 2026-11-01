@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useContext } from 'react';
-import { AudioContext } from '../context/AudioContext';
+import { AudioContext } from '../context/contexts';
 
 const ReverbVisualizer = () => {
     const canvasRef = useRef(null);
@@ -90,7 +90,7 @@ const ReverbVisualizer = () => {
             cancelAnimationFrame(animationId);
             window.removeEventListener('resize', resize);
         };
-    }, [isReady]);
+    }, [isReady, masterFft]);
 
     return (
         <div style={{ width: '100%', height: '100px', background: '#000', overflow: 'hidden' }}>

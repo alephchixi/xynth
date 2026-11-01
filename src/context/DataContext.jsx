@@ -1,7 +1,5 @@
-import React, { createContext, useState, useEffect, useContext, useRef } from 'react';
-import { AudioContext } from './AudioContext';
-
-export const DataContext = createContext(null);
+import React, { useState, useEffect, useEffectEvent, useContext, useRef } from 'react';
+import { AudioContext, DataContext } from './contexts';
 
 export const DataProvider = ({ children }) => {
     const { isReady, updateBitcoin, updateTransport, updateResources, updateEthereum, updateSolana } = useContext(AudioContext);
@@ -53,7 +51,7 @@ export const DataProvider = ({ children }) => {
     });
 
     // Main Loop
-    const fetchData = () => {
+    const onSnapshot = useEffectEvent(() => {
         try {
             const hashrate = marketDataRef.current.hashrate || (400 + Math.random() * 100);
             const btcPrice = marketDataRef.current.bitcoin;
@@ -78,7 +76,6 @@ export const DataProvider = ({ children }) => {
 
             // Map mempool fees to notes for audio synthesis
             const lowFeeNote = `C${Math.floor(2 + mempoolFees.low / 50)}`;
-            const highFeeNote = `C${Math.floor(3 + mempoolFees.high / 100)}`;
 
             // Memecoin Frequency Modulation Target
             // instead of LFO, we pass the coin type to AudioContext to select a frequency base
@@ -132,9 +129,9 @@ export const DataProvider = ({ children }) => {
                     // Epoch progress micro-movements
                     jitterEpochProgress = solanaEpochProgress + (Math.random() * 0.0001);
 
-                    updateSolana(jitterTps, solanaEpoch, jitterEpochProgress);
+                    updateSolana(jitterTps);
 
-                    audioFeedback = updateResources(lowFeeNote, mempoolFees.high, mempoolSize, mempoolFees.medium) || {};
+                    audioFeedback = updateResources(lowFeeNote, mempoolFees.high, mempoolSize) || {};
                 } catch (audioErr) {
                     console.warn("Audio Update Error:", audioErr);
                 }
@@ -178,7 +175,7 @@ export const DataProvider = ({ children }) => {
         } catch (e) {
             console.error("Main Loop Crash Prevented:", e);
         }
-    };
+    });
 
     // Bitcoin Price Polling
     useEffect(() => {
@@ -369,12 +366,13 @@ export const DataProvider = ({ children }) => {
 
     // Main Loop Interval
     useEffect(() => {
-        let interval;
-        if (isReady) {
-            fetchData();
-            interval = setInterval(fetchData, 3000);
-        }
-        return () => clearInterval(interval);
+        if (!isReady) return;
+        const firstSnapshot = setTimeout(() => onSnapshot(), 0);
+        const interval = setInterval(() => onSnapshot(), 3000);
+        return () => {
+            clearTimeout(firstSnapshot);
+            clearInterval(interval);
+        };
     }, [isReady]);
 
     const toggleMute = (key) => {

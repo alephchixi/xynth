@@ -1,8 +1,7 @@
 import React, { useContext, useState } from 'react';
-import { AudioContext } from '../context/AudioContext';
-import { DataContext } from '../context/DataContext';
+import { AudioContext, DataContext } from '../context/contexts';
 
-const ModuleCard = ({ id, title, subtitle, dataKey, showVolume = true, children }) => {
+const ModuleCard = ({ title, subtitle, dataKey, showVolume = true, children }) => {
     const { data, toggleMute: toggleDataMute } = useContext(DataContext);
     const { toggleMute: toggleAudioMute, setVolume } = useContext(AudioContext);
 

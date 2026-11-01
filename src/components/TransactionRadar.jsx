@@ -44,8 +44,6 @@ const TransactionRadar = ({ txData }) => {
             if (Math.abs(blips.length - targetCount) > 10) {
                 // Regenerate to match density
                 blips = Array.from({ length: targetCount }).map(() => {
-                    const sizeNormalized = Math.min(1, (data.avgSize || 500) / 1000);
-                    const baseRadius = sizeNormalized * (maxRadius - 10);
                     return {
                         r: Math.random() * (maxRadius - 5), // Random placement within circle
                         theta: Math.random() * Math.PI * 2,
