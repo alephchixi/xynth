@@ -319,7 +319,7 @@ export const AudioProvider = ({ children }) => {
         // In Freeverb, roomSize is decay. Dampening controls how fast high freqs decay.
         // Let's map Block Util -> Dampening Frequency (High Util = Low Freq Dampening = Muffled/Claustrophobic)
         const dampening = Math.max(500, 10000 - (blockUtil * 90));
-        ethereumReverb.current.dampening.rampTo(dampening, 1);
+        ethereumReverb.current.dampening = dampening;
 
         // Wetness constant-ish or slightly modulated
         ethereumReverb.current.wet.rampTo(0.7, 1);
