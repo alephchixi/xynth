@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { AudioContext, AudioProvider } from './context/AudioContext';
-import { DataProvider, DataContext } from './context/DataContext';
+import { AudioProvider } from './context/AudioContext';
+import { DataProvider } from './context/DataContext';
+import { AudioContext, DataContext } from './context/contexts';
 import StartOverlay from './components/StartOverlay';
 import Visualizer from './components/Visualizer';
 import AudioVisualizer from './components/AudioVisualizer'; // 3D Mass
@@ -28,17 +29,17 @@ const AppContent = () => {
   const [ghostHarm, setGhostHarm] = useState(2);
 
   // Resources State (Mempool controls)
-  const [lowFeeMix, setLowFeeMix] = useState(1);
+  const [lowFeeMix] = useState(1);
   const [highFeeMix, setHighFeeMix] = useState(1);
   const [resHarm, setResHarm] = useState(1);
 
   useEffect(() => {
     if (isReady) setTransportParams(ghostRes, ghostHarm);
-  }, [ghostRes, ghostHarm, isReady]);
+  }, [ghostRes, ghostHarm, isReady, setTransportParams]);
 
   useEffect(() => {
     if (isReady) setResourceParams(lowFeeMix, highFeeMix, resHarm);
-  }, [lowFeeMix, highFeeMix, resHarm, isReady]);
+  }, [lowFeeMix, highFeeMix, resHarm, isReady, setResourceParams]);
 
   return (
     <div id="app-container">

@@ -4,5 +4,5 @@ try {
   require(workerData.modulePath).unzipSync(workerData.archive);
   parentPort.postMessage({ rejected: false });
 } catch (error) {
-  parentPort.postMessage({ rejected: true, code: error.code });
+  parentPort.postMessage({ rejected: true, code: error?.code ?? null });
 }

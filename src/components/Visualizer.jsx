@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useContext } from 'react';
-import { AudioContext } from '../context/AudioContext';
+import { AudioContext } from '../context/contexts';
 
 const Visualizer = () => {
     const canvasRef = useRef(null);
@@ -48,7 +48,7 @@ const Visualizer = () => {
             cancelAnimationFrame(animationId);
             window.removeEventListener('resize', resize);
         };
-    }, [isReady]);
+    }, [isReady, analyzer]);
 
     return (
         <div id="visualizer-container" style={{ width: '100%', height: '100%', border: '1px solid #333', background: '#000' }}>

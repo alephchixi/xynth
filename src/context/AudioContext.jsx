@@ -1,7 +1,6 @@
-import React, { createContext, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import * as Tone from 'tone';
-
-export const AudioContext = createContext(null);
+import { AudioContext } from './contexts';
 
 export const AudioProvider = ({ children }) => {
     const [isReady, setIsReady] = useState(false);
@@ -11,8 +10,6 @@ export const AudioProvider = ({ children }) => {
     const transportNoise = useRef(null);
     const goldSynth = useRef(null);
     const oilSynth = useRef(null);
-    const bankSynth = useRef(null);
-    const lifeSynth = useRef(null);
     const analyzer = useRef(null); // Waveform
     const masterFft = useRef(null); // FFT
 
@@ -30,9 +27,6 @@ export const AudioProvider = ({ children }) => {
 
     // Resources DSP
     const resourcesChebyshev = useRef(null);
-
-    // Bank Playback State
-    const bankLoopId = useRef(null);
 
     // Internal Gains (Mixing)
     const goldGain = useRef(null);
@@ -74,7 +68,7 @@ export const AudioProvider = ({ children }) => {
                 }
             }
             return Tone.Frequency(targetMidi, "midi").toFrequency();
-        } catch (e) { return rawFreq; }
+        } catch { return rawFreq; }
     };
 
     const initAudio = async () => {
@@ -220,8 +214,8 @@ export const AudioProvider = ({ children }) => {
         // Price -> Frequency (Quantized)
         const rawFreq = Math.max(40, (price || 50000) * 0.0015);
 
-        let freqMult = 1;
-        let harmonicity = 1;
+        let freqMult;
+        let harmonicity;
 
         // Memecoin Timbre Logic with Depth Scaling
         // 0% Depth = Standard Sine/AM (clean)
@@ -288,7 +282,7 @@ export const AudioProvider = ({ children }) => {
         transportFilter.current.Q.rampTo(qParams, 2);
     };
 
-    const updateResources = (lowFeeNote, highFee, mempoolSize, mediumFee) => {
+    const updateResources = (lowFeeNote, highFee, mempoolSize) => {
         if (!goldSynth.current) return;
 
         // Convert quantized note to frequency
@@ -331,7 +325,7 @@ export const AudioProvider = ({ children }) => {
         ethereumReverb.current.wet.rampTo(0.7, 1);
     };
 
-    const updateSolana = (tps, epoch, epochProgress) => {
+    const updateSolana = (tps) => {
         if (!solanaFilter.current) return;
 
         const depth = modDepths.current.solana;
@@ -341,7 +335,6 @@ export const AudioProvider = ({ children }) => {
         // Modulation adds to it based on TPS flux
         // TPS typically 1000-5000. 
         // Let's map TPS to a frequency offset: 0 to 5000Hz
-        const modAmount = ((tps - 1000) / 4000) * 5000 * depth;
 
         // We act on the *current* frequency as the base? 
         // No, rampTo in setSolanaFilterFreq sets the target. 
@@ -423,19 +416,19 @@ export const AudioProvider = ({ children }) => {
 
     // Specialized Logic Accessors
 
-    const setTransportParams = (resonance, harmonics) => {
+    const setTransportParams = useCallback((resonance, harmonics) => {
         if (!transportFilter.current || !transportDist.current) return;
         transportFilter.current.Q.rampTo(resonance, 0.1);
         transportDist.current.order = Math.floor(harmonics);
-    };
+    }, []);
 
-    const setResourceParams = (goldVol, oilVol, harmonics) => {
+    const setResourceParams = useCallback((goldVol, oilVol, harmonics) => {
         if (!goldGain.current || !oilGain.current || !resourcesChebyshev.current) return;
 
         goldGain.current.gain.rampTo(goldVol, 0.1);
         oilGain.current.gain.rampTo(oilVol, 0.1);
         resourcesChebyshev.current.order = Math.floor(harmonics);
-    };
+    }, []);
 
     return (
         <AudioContext.Provider value={{

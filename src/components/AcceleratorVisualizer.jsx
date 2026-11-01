@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useContext } from 'react';
-import { AudioContext } from '../context/AudioContext';
+import { AudioContext } from '../context/contexts';
 
 const AcceleratorVisualizer = () => {
     const canvasRef = useRef(null);
@@ -79,7 +79,7 @@ const AcceleratorVisualizer = () => {
             cancelAnimationFrame(animationId);
             window.removeEventListener('resize', resize);
         };
-    }, [isReady]);
+    }, [isReady, solanaFilter]);
 
     return (
         <div style={{

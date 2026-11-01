@@ -1,7 +1,7 @@
-import React, { useRef, useContext, useMemo } from 'react';
+import React, { useRef, useContext } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { MeshDistortMaterial, Sphere } from '@react-three/drei';
-import { AudioContext } from '../context/AudioContext';
+import { AudioContext } from '../context/contexts';
 import * as THREE from 'three';
 
 const VisualizerMesh = () => {
@@ -9,11 +9,9 @@ const VisualizerMesh = () => {
     const material = useRef();
     const { masterFft, analyzer, isReady, bitcoinSynth, transportFilter, solanaFilter, ethereumReverb } = useContext(AudioContext);
 
-    // Temp vector for efficient calculations
-    const dataArray = useMemo(() => new Float32Array(512), []);
     const color = new THREE.Color();
 
-    useFrame((state) => {
+    useFrame(() => {
         if (!isReady || !masterFft.current || !analyzer.current) return;
 
         // Get FFT Data for basic movement

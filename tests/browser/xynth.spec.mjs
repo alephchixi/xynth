@@ -24,7 +24,7 @@ test('the built synthesizer initializes with offline feeds and retains its contr
     if (request.method() === 'OPTIONS') return route.fulfill({ status: 204, headers });
     let body;
     if (url.hostname === 'api.coingecko.com' && url.pathname === '/api/v3/simple/price') {
-      body = { bitcoin: { usd: 95000 } };
+      body = { bitcoin: { usd: 96000 } };
     } else if (url.hostname === 'mempool.space') {
       const fixtures = {
         '/api/v1/mining/hashrate/3d': { currentHashrate: 450e18 },
@@ -66,11 +66,15 @@ test('the built synthesizer initializes with offline feeds and retains its contr
     await expect(page.locator('.module-title').filter({ hasText: title })).toBeVisible();
   }
   const monster = page.locator('.module').filter({ has: page.getByText('THE MONSTER', { exact: true }) });
+  const modulation = monster.locator('.control-group').filter({ hasText: 'MEMECOIN TIMBRE' });
+  await modulation.getByRole('combobox').selectOption('doge');
+  await expect(modulation.getByRole('combobox')).toHaveValue('doge');
   await monster.getByRole('button', { name: 'ACTIVE', exact: true }).click();
   await expect(monster).toHaveClass(/muted-style/);
   await monster.getByRole('button', { name: 'OFFLINE', exact: true }).click();
   await expect(monster).not.toHaveClass(/muted-style/);
-  await expect.poll(() => monster.locator('.module-data').innerText()).toContain('95.0k');
+  await expect.poll(() => monster.locator('.module-data').innerText(), { timeout: 10_000 }).toContain('96.0k');
+  await expect.poll(async () => Number(await modulation.locator('canvas + div').innerText()), { timeout: 10_000 }).toBeLessThanOrEqual(0.2);
   const slider = monster.getByRole('slider').last();
   await slider.press('Home');
   await slider.press('ArrowRight');
