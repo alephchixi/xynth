@@ -120,7 +120,7 @@ test('silent services fall back to the next source, and a feed with none is mark
     if (url.hostname === 'ethereum-rpc.publicnode.com') {
       return route.fulfill({ status: 200, headers, contentType: 'application/json', body: JSON.stringify(request.postDataJSON().map(({ id, method }) => ({ jsonrpc: '2.0', id, result: method === 'eth_gasPrice' ? '0x3b9aca00' : { gasUsed: '0x10', gasLimit: '0x20' } }))) });
     }
-    if (url.hostname.endsWith('solana.com') || url.hostname === 'solana-rpc.publicnode.com') {
+    if (['api.mainnet-beta.solana.com', 'solana-rpc.publicnode.com'].includes(url.hostname)) {
       return route.fulfill({ status: 403, headers, contentType: 'application/json', body: JSON.stringify({ jsonrpc: '2.0', error: { code: 403, message: 'Access forbidden' }, id: 1 }) });
     }
     if (body) return route.fulfill({ status: 200, headers, contentType: 'application/json', body: JSON.stringify(body) });

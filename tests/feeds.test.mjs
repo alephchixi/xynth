@@ -50,8 +50,9 @@ test('Solana throughput and epoch come from one batch', () => {
 test('a reading falls back to the next source and reports which one answered', async () => {
   const calls = [];
   const fetchImpl = async (url) => {
-    calls.push(new URL(url).hostname);
-    if (url.startsWith('https://mempool.space')) throw new Error('timeout');
+    const { hostname } = new URL(url);
+    calls.push(hostname);
+    if (hostname === 'mempool.space') throw new Error('timeout');
     return { ok: true, json: async () => ({ hash_rate: 1e12 }) };
   };
   assert.deepEqual(await firstLive(READINGS.hashrate, fetchImpl), { value: 1000, source: 'blockchain.info' });
