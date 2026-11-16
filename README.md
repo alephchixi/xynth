@@ -7,7 +7,7 @@ Work in progress. Feel free to let me know your comments and share any sound exp
 
 CI uses Node.js 22.23.4 and `npm ci` with the committed lockfile. Run `npm run lint`, `npm test` and `npm run build` for static validation, bounded archive-parser regression cases and the production build. `npx playwright install chromium` prepares the browser used by `npm run test:e2e`.
 
-Desktop/mobile Chromium checks exercise the local built interface, audio startup, WebGL and mute/volume controls. Synthetic fixtures replace the four data-service origins; unexpected external requests are blocked. No live RPC, account, wallet, microphone or recording is used. This is software/API qualification, not a claim of human listening or physical-device coverage.
+Desktop/mobile Chromium checks exercise the local built interface, audio startup, WebGL and mute/volume controls. Synthetic fixtures replace the data-service origins, including a run where the first sources stay silent and the next ones answer; unexpected external requests are blocked. Each reading tries its sources in order (`src/context/feeds.js`), and every module says whether its values are LIVE, STALE or SIMULATED, with the source that answered. No live RPC, account, wallet, microphone or recording is used. This is software/API qualification, not a claim of human listening or physical-device coverage.
 
 The two existing fflate release lines receive compatible security backports, 0.6.11 and 0.8.3. Archive-parser regression cases run in workers with a two-second termination bound. The application's model/archive feature reachability is separate from the presence of a package version in the dependency graph.
 

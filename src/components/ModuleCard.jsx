@@ -1,6 +1,22 @@
 import React, { useContext, useState } from 'react';
 import { AudioContext, DataContext } from '../context/contexts';
 
+const STATE_COLOR = { live: 'var(--accent-color)', stale: '#c9a227', simulated: '#e05a4f' };
+
+/** Where each value on the module came from: a live source, a stale one, or the instrument's own simulation. */
+export const Provenance = ({ items }) => {
+    if (!items?.length) return null;
+    return (
+        <div className="module-provenance" style={{ fontSize: '0.6rem', fontFamily: 'monospace', letterSpacing: '1px', display: 'flex', flexWrap: 'wrap', gap: '4px 12px' }}>
+            {items.map(({ field, state, source }) => (
+                <span key={field} data-state={state} style={{ color: STATE_COLOR[state] }}>
+                    {field.toUpperCase()}: {state === 'simulated' ? 'SIMULATED' : `${state === 'stale' ? 'STALE · ' : 'LIVE · '}${source}`}
+                </span>
+            ))}
+        </div>
+    );
+};
+
 const ModuleCard = ({ title, subtitle, dataKey, showVolume = true, children }) => {
     const { data, toggleMute: toggleDataMute } = useContext(DataContext);
     const { toggleMute: toggleAudioMute, setVolume } = useContext(AudioContext);
@@ -82,6 +98,8 @@ const ModuleCard = ({ title, subtitle, dataKey, showVolume = true, children }) =
                     </div>
                 )}
             </div>
+
+            <Provenance items={moduleData.provenance} />
 
             {/* Custom Children Controls */}
             {children && (
