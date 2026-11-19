@@ -6,7 +6,7 @@ import StartOverlay from './components/StartOverlay';
 import Visualizer from './components/Visualizer';
 import AudioVisualizer from './components/AudioVisualizer'; // 3D Mass
 import TransactionRadar from './components/TransactionRadar';
-import ModuleCard from './components/ModuleCard';
+import ModuleCard, { Provenance } from './components/ModuleCard';
 import ModulationPanel from './components/ModulationPanel';
 import FlightRadar from './components/FlightRadar';
 import ReverbVisualizer from './components/ReverbVisualizer';
@@ -78,6 +78,10 @@ const AppContent = () => {
               <div className="hz-display" style={{ fontSize: '0.6rem', color: '#888', marginBottom: '5px' }}>
                 Low Fee: {data.resources.lowFeeHz}Hz | High Fee: {data.resources.highFeeHz}Hz
               </div>
+              <div className="hz-display" style={{ fontSize: '0.6rem', color: '#888', marginBottom: '5px' }}>
+                {data.resources.label}
+              </div>
+              <Provenance items={data.resources.provenance} />
               <div className="mixer-row">
                 <label>FEE MIX</label>
                 <input type="range" className="cyber-range" min="0" max="1" step="0.01" value={highFeeMix} onChange={e => setHighFeeMix(parseFloat(e.target.value))} />
@@ -176,29 +180,33 @@ const AppContent = () => {
         <div style={{ marginTop: '40px', padding: '20px', borderTop: '1px solid #333', color: '#666', fontSize: '0.75rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '20px', textAlign: 'left' }}>
           <div>
             <strong style={{ display: 'block', color: '#888', marginBottom: '5px' }}>THE MONSTER</strong>
-            <div>Price: CoinGecko API (BTC)</div>
-            <div>Hashrate: Mempool.space API</div>
-            <div>Freq Mod: Memecoins</div>
+            <div>Price: CoinGecko, else blockchain.info</div>
+            <div>Hashrate: mempool.space, else blockchain.info</div>
+            <div>Freq Mod: Memecoins (simulated)</div>
+            <div>Market flow: Polymarket (simulated)</div>
           </div>
           <div>
             <strong style={{ display: 'block', color: '#888', marginBottom: '5px' }}>THE GHOST</strong>
-            <div>Transactions: Mempool.space API</div>
+            <div>Transactions: mempool.space, else Blockstream</div>
           </div>
           <div>
             <strong style={{ display: 'block', color: '#888', marginBottom: '5px' }}>EARTH EATER</strong>
-            <div>Mempool: Mempool.space API</div>
-            <div>Fees: Real-time sat/vB</div>
+            <div>Mempool: mempool.space, else Blockstream</div>
+            <div>Fees: sat/vB, same sources</div>
           </div>
           <div>
             <strong style={{ display: 'block', color: '#888', marginBottom: '5px' }}>THE ATMOSPHERE</strong>
-            <div>Gas: Etherscan API</div>
-            <div>Block Util: Ethereum Network</div>
+            <div>Gas and block use: Ethereum RPC (publicnode, else dRPC)</div>
             <div>Reverb Size: Gas Price</div>
           </div>
           <div>
             <strong style={{ display: 'block', color: '#888', marginBottom: '5px' }}>THE ACCELERATOR</strong>
-            <div>TPS: Solana RPC</div>
+            <div>TPS and epoch: Solana RPC (publicnode, else Solana)</div>
             <div>Filter Freq: TPS Modulated</div>
+          </div>
+          <div>
+            <strong style={{ display: 'block', color: '#888', marginBottom: '5px' }}>PROVENANCE</strong>
+            <div>Each module says whether its values are LIVE, STALE (no answer for 90 s) or SIMULATED (no source has answered).</div>
           </div>
         </div>
       </div>

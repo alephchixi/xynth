@@ -7,7 +7,7 @@ includeSubDomains and preload are not enabled by this change. TLS 1.2 and a
 valid certificate chain were verified before preparing it.
 
 The site-specific CSP starts in report-only mode. It preserves bundled WebGL,
-audio/worklet/blob use and existing Cloudflare Analytics. Xynth also lists its existing CoinGecko, Mempool, Etherscan and Solana RPC origins. No new reporting destination is configured. Inspect hosted browser policy diagnostics
+audio/worklet/blob use and existing Cloudflare Analytics. Xynth also lists the origins of its feeds: CoinGecko, mempool.space, Blockstream, blockchain.info, two keyless Ethereum RPCs (publicnode, dRPC) and two Solana RPCs (publicnode, the Solana public endpoint). Etherscan left the list when its V1 API was retired; `src/context/feeds.js` keeps the same list in `FEED_ORIGINS`, and a unit test compares the two. No new reporting destination is configured. Inspect hosted browser policy diagnostics
 and normal controls before considering CSP enforcement or longer HSTS.
 
 CI retains every existing audit, unit/build and browser gate; the public
